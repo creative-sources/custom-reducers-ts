@@ -1,0 +1,16 @@
+{
+  "name": "redux-playground",
+  "version": "1.0.0",
+  "description": "Playground to test redux functions",
+  "main": "index.tsx",
+  "author": "Blas Oronoz",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@types/react": "^17.0.30",
+    "@types/react-dom": "^17.0.9"
+  },
+  "scripts": {
+    "dev": "parcel serve index.html"
+  }
+}
