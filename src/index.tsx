@@ -5,12 +5,20 @@ import { counter } from "./reducer";
 import { todos, Todo } from "./reducer_Todo";
 
 const store = myCreateStore<any, Action>(counter);
+
+
 interface IProps {
   count: number;
   todos: Todo[]
 }
+
+// This Happens within a file
 const TodoStore = myCreateStore<Todo[], Todo>(todos)
+
+// This happens with in the store or another component
 TodoStore.dispatch({ index: 1, text: "say hello", complete: false, type: "ADD_TODO" })
+
+
 class App extends Component<IProps, {}> {
   render() {
     return (
