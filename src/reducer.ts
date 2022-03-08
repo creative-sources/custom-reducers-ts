@@ -1,8 +1,10 @@
 //@ts-check
 /**
- * @param {any} action
+ * @param {string} action type makes the number increse or decrese
  */
-export const counter = (state = 0, action: { type: any; }) => {
+
+import { Action, State } from "./store";
+export const counter = (state = 0, action: { type: string }) => {
   switch (action.type) {
     case "INCREMENT":
       return state + 1;

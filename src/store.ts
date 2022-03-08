@@ -1,40 +1,48 @@
 //@ts-check
+
+export type Action = { type: "INCREMENT" | "DECREMENT" }
+
+export type State = number | undefined
+
+type Reducer = <T, A>(state: T | undefined, action: A) => T
+
 /**
  * 
- * @param {any} reducer 
- * @returns 
+ * @param `Reducer` has an state and action
+ * @typeParam `Reducer`
+ * @method getState Returns the current state
+ * @method dispatch takes an action and changes the current state
+ * @method subscribe takes an array of lisetners and provide them with the latest state
+ * @returns returns a state, dispatch and subcribe function
  */
-export const myCreateStore = (reducer: { (state: number | undefined, action: { type: any; }): number; (arg0: any, arg1: any): any; }) => {
-  /**
-   * @type {any}
-   */
-  let state: any;
-  /**
-   * @type {any[]}
-   */
-  let listeners: { forEach?: any; push?: any; filter?: any; } = [];
+
+export const myCreateStore = <T, A>(reducer: any) => {
+
+  let state: T;
+
+  let listeners: Array<any> = [];
 
   const getState = () => state;
 
-  const dispatch = (/** @type {{}} */ action: {}) => {
+  const dispatch = (action: A) => {
     state = reducer(state, action);
     listeners.forEach((listener: () => any) => listener());
   };
 
-  const subscribe = (/** @type {any} */ listener: any) => {
+  const subscribe = (listener: any) => {
     listeners.push(listener);
     return () => {
       listeners = listeners.filter((l: any) => l !== listener);
     };
   };
 
-  dispatch({});
+  dispatch({} as A);
 
   return { getState, dispatch, subscribe };
 };
 
-export const combineReducer = (/** @type {object} */ reducers: { [x: string]: (arg0: any, arg1: any) => any; }) => {
-  return (state = {}, /** @type {any} */ action: any) => {
+export const combineReducer = (reducers: Reducer[]) => {
+  return (state = {}, action: any) => {
     return Object.keys(reducers).reduce((nextState: { [x: string]: any; }, key: string | number) => {
       // @ts-ignore
       nextState[key] = reducers[key](state[key], action);

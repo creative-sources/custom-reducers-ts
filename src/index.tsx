@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-import { myCreateStore } from "./store.js";
-import { counter } from "./reducer.js";
+import { Action, myCreateStore, State } from "./store";
+import { counter } from "./reducer";
+import { todos, Todo } from "./reducer_Todo";
 
-const store = myCreateStore(counter);
+const store = myCreateStore<any, Action>(counter);
 interface IProps {
   count: number;
+  todos: Todo[]
 }
-
+const TodoStore = myCreateStore<Todo[], Todo>(todos)
+TodoStore.dispatch({ index: 1, text: "say hello", complete: false, type: "ADD_TODO" })
 class App extends Component<IProps, {}> {
   render() {
     return (
@@ -23,13 +26,16 @@ class App extends Component<IProps, {}> {
             Increse
           </button>
         </div>
+        <div>
+          {JSON.stringify(this.props.todos)}
+        </div>
         {this.props.count}
       </div>
     );
   }
 }
 const renderApp = () => {
-  render(<App count={store.getState()}></App>, document.getElementById("root"));
+  render(<App count={store.getState()} todos={TodoStore.getState()}></App>, document.getElementById("root"));
 };
 
 store.subscribe(renderApp);
